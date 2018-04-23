@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Stories</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+	<link rel="stylesheet" href="static/css/card_style.css">
+	<script src="functions/set_story.js"></script>
+
+</head>
+
+<script>
+	$(document).ready(function(){
+		$('#nav').load('layout/nav.html');
+	});
+</script>
+
+<script>
+	$.ajax({
+		type: 'get',
+		url: 'http://localhost:8000/story/list',
+		success:function(htm, textStatus, xhr){
+			var story_cards = ''
+			$.each(htm, function(index, value){
+				story_cards+= get_story_html(value);
+			});
+			console.log(story_cards);
+			$('.body-content').html(story_cards);
+		},
+		error:function(htm, textStatus, xhr){
+			if(xhr=='Forbidden'){
+				$('#error_dialog').html('<div class="notify alert alert-danger"><b>Error: </b>Incorrect credentials</div>');
+				setTimeout(function(){ $('.notify').hide(); }, 3000);
+			}
+		}
+	});
+</script>
+
+
+<body>
+	<div id="nav"></div>
+	<div class="body-content container">
+		
+	</div>
+	
+</body>
+</html>

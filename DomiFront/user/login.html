@@ -1,0 +1,84 @@
+<!-- login page -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style type="text/css">
+    body{ font: 14px sans-serif; }
+    .wrapper{ width: 350px; padding: 20px; }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+    <div class="wrapper">
+        <h2>Login</h2>
+        <p>Please fill in your credentials to login.</p>
+        <form id="login_form">
+            <div id="dialog_msg"></div>
+            <div class="form-group">
+                <label>Username:<sup>*</sup></label>
+                <input type="text" name="username" class="form-control" id="username_loginpage">
+                <!-- <span class="help-block"><?php echo $username_err; ?></span> -->
+            </div>    
+            <div class="form-group">
+                <label>Password:<sup>*</sup></label>
+                <input type="password" name="password" id="password_loginpage" class="form-control">
+                <!-- <span class="help-block"><?php echo $password_err; ?></span> -->
+            </div>
+            <div class="form-group">
+                <button type="button" id="login_btn" class="btn btn-primary">Login</button>
+            </div> 
+            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+        </form>
+    </div> 
+
+    <script type="text/javascript">
+
+       console.log('hello');
+
+       $('#login_btn').click(function(){
+        var data = {
+            "username": $('#username_loginpage').val(),
+            "password": $('#password_loginpage').val()
+        };
+        console.log(data);
+        $.ajax({
+            type: 'post',
+            data: data,
+            url: 'http://localhost:8000/login',
+            success:function(htm){ 
+              var now = new Date();
+              var time = now.getTime();
+              time += 1*3600 * 1000;
+              now.setTime(time);
+
+              console.log(htm.token + now.toUTCString());
+
+              document.cookie = "token="+htm.token+"; expires="+ now.toUTCString() +"; path=/";
+              console.log(document.cookie);
+              location.href="../story/submit.html";
+                        // console.log('hello'+htm);                        
+
+                    },
+                    error:function(htm, textStatus, xhr){
+                     console.log(htm);
+                     if(xhr=='Forbidden'){
+                        $('#dialog_msg').html('<div class="notify alert alert-danger"><b>Error: </b>Incorrect credentials</div>');
+                        setTimeout(function(){ $('.notify').hide(); }, 3000);
+                    }
+                }
+            });
+
+
+    });
+
+</script>
+
+
+</body>
+</html>
