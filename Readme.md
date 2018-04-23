@@ -1,4 +1,4 @@
-####How to install
+#### How to install
 
 - Initiate an environment so that Django server can be run
 - It can be done by `virtualenv env_name --python=/<PYTHON_PATH>`
@@ -9,7 +9,7 @@
 - Roll!
 
 
-####Languages used
+#### Languages used
 - Django 2.0.3
 - Django-rest-framework
 - HTML, CSS, Bootstrap
